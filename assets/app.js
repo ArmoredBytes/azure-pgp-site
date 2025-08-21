@@ -6,7 +6,7 @@
 
   const tag = (window.AZURE_PGP_RELEASE_TAG || 'v1.0.0');
   const owner = 'ArmoredBytes';
-  const repo = 'azure-pgp-cli';
+  const repo = 'azure-pgp-site';
   const apiUrl = `https://api.github.com/repos/${owner}/${repo}/releases/tags/${encodeURIComponent(tag)}`;
 
   const listElem = document.getElementById('downloads-list');
