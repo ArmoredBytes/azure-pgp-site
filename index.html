@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,12 +11,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/style.css">
 </head>
+
 <body>
   <header class="site-header">
     <div class="container header-inner">
       <h1>ArmoredBytes</h1>
       <nav>
         <a href="#about">About</a>
+        <a href="#pricing">Pricing</a>
+        <a href="license/license.html">License</a>
         <a href="#downloads">Downloads</a>
         <a href="https://github.com/ArmoredBytes/azure-pgp" target="_blank" rel="noopener">GitHub</a>
       </nav>
@@ -26,10 +30,12 @@
     <section id="hero" class="hero">
       <div class="container">
         <h2>PGP key generation and storage in Azure Key Vault</h2>
-        <p>azure-pgp fills the gap for securely generating PGP keys and storing them in Azure Key Vault. Automate your workflows with a simple, cross-platform CLI.</p>
+        <p>azure-pgp fills the gap for securely generating PGP keys and storing them in Azure Key Vault. Automate your
+          workflows with a simple, cross-platform CLI.</p>
         <div class="cta">
           <a class="button primary" href="#downloads">Get Downloads</a>
-          <a class="button" href="https://github.com/ArmoredBytes/azure-pgp-site" target="_blank" rel="noopener">View on GitHub</a>
+          <a class="button" href="https://github.com/ArmoredBytes/azure-pgp-site" target="_blank" rel="noopener">View on
+            GitHub</a>
         </div>
       </div>
     </section>
@@ -37,12 +43,42 @@
     <section id="about" class="section">
       <div class="container">
         <h3>About</h3>
-        <p>The <strong>azure-pgp</strong> cli provides opinionated commands to generate OpenPGP keypairs and persist them in Azure Key Vault, enabling secure distribution and usage across your cloud workloads.</p>
+        <p>The <strong>azure-pgp</strong> cli provides opinionated commands to generate OpenPGP keypairs and persist
+          them in Azure Key Vault, enabling secure distribution and usage across your cloud workloads.</p>
         <ul class="feature-list">
           <li>Cross-platform binaries</li>
           <li>Uses Azure Key Vault for secure storage</li>
           <li>Automates key lifecycle tasks</li>
         </ul>
+      </div>
+    </section>
+
+    <section id="pricing" class="section">
+      <div class="container">
+        <h3>Pricing</h3>
+        <p>Choose the plan that works best for your needs:</p>
+        <div class="pricing-grid">
+          <div class="pricing-card">
+            <h4>Personal</h4>
+            <div class="price">£0</div>
+            <ul>
+              <li>Only for personal use</li>
+              <li>Community support</li>
+              <li>Free</li>
+            </ul>
+            <a class="button" href="personal-license/personal-license.html">Get License</a>
+          </div>
+          <div class="pricing-card">
+            <h4>Enterprise</h4>
+            <div class="price">£1500/yr per user</div>
+            <ul>
+              <li>Everything in Personal</li>
+              <li>Dedicated support</li>
+              <li>SLA guarantees</li>
+            </ul>
+            <a class="button" href="enterprise-license/enterprise-license.html">Get License</a>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -53,7 +89,8 @@
         <div id="downloads-list" class="downloads-list" aria-live="polite"></div>
         <p id="downloads-fallback" class="downloads-fallback hidden">
           Could not load assets automatically. Browse releases:
-          <a href="https://github.com/ArmoredBytes/azure-pgp-site/releases/tag/v1.0.0" target="_blank" rel="noopener">v1.0.0 on GitHub</a>
+          <a href="https://github.com/ArmoredBytes/azure-pgp-site/releases/tag/v1.0.0" target="_blank"
+            rel="noopener">v1.0.0 on GitHub</a>
         </p>
       </div>
     </section>
@@ -68,5 +105,5 @@
   <script>window.AZURE_PGP_RELEASE_TAG = "v1.0.0";</script>
   <script src="assets/app.js" defer></script>
 </body>
-</html>
 
+</html>

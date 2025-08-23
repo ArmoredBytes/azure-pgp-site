@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request License - ArmoredBytes Azure PGP</title>
+    <meta name="description" content="Request a personal license key for Azure PGP.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/style.css">
+    <style>
+        .license-form {
+            max-width: 600px;
+            margin: 40px auto;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 32px;
+        }
+
+        .license-form h2 {
+            margin: 0 0 8px 0;
+            font-size: 28px;
+        }
+
+        .license-form .subtitle {
+            color: var(--muted);
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg);
+            color: var(--text);
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .license-response {
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .license-response.success {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #22c55e;
+        }
+
+        .license-response.error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+        }
+
+        .license-key {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 12px;
+            font-family: monospace;
+            word-break: break-all;
+            margin-top: 12px;
+            font-size: 14px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            color: var(--muted);
+        }
+
+        .spinner {
+            border: 2px solid var(--border);
+            border-top: 2px solid var(--primary);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .button {
+            margin-top: 8px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <h1>ArmoredBytes</h1>
+            <nav>
+                <a href="../index.html">Home</a>
+                <a href="../index.html#pricing">Pricing</a>
+                <a href="../index.html#downloads">Downloads</a>
+                <a href="https://github.com/ArmoredBytes/azure-pgp" target="_blank" rel="noopener">GitHub</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="license-form">
+                <h2>Request License Key</h2>
+                <p class="subtitle">Get your personal license key to unlock advanced features of Azure PGP.</p>
+
+                <form id="licenseForm">
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="company">Company (Optional)</label>
+                        <input type="text" id="company" name="company">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="licenseType">License Type *</label>
+                        <select id="licenseType" name="licenseType" required>
+                            <option value="">Select license type...</option>
+                            <option value="personal">Personal</option>
+                            <option value="enterprise">Enterprise</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="terms" name="terms" required>
+                            I agree to the <a href="#" style="color: var(--primary);">Terms of Service</a> and <a
+                                href="#" style="color: var(--primary);">Privacy Policy</a>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="button primary">Request License Key</button>
+                </form>
+
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    Processing your request...
+                </div>
+
+                <div class="license-response" id="response"></div>
+
+                <a href="../index.html" class="back-link">← Back to Home</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>© <span id="year"></span> azure-pgp • Built for GitHub Pages</p>
+        </div>
+    </footer>
+
+    <script>
+        // Set current year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Handle form submission
+        document.getElementById('licenseForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const loading = document.getElementById('loading');
+            const response = document.getElementById('response');
+            const form = e.target;
+
+            // Show loading state
+            loading.style.display = 'block';
+            response.style.display = 'none';
+
+            // Get form data
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                // In a real implementation, you would make an API call to your license server
+                // For now, we'll simulate the response
+                await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate API delay
+
+                // Simulate license key generation
+                const licenseKey = generateLicenseKey(data.licenseType);
+
+                // Show success response
+                response.className = 'license-response success';
+                response.innerHTML = `
+                    <h4>License Key Generated Successfully!</h4>
+                    <p>Your personal license key has been generated. Please save this key in a secure location:</p>
+                    <div class="license-key">${licenseKey}</div>
+                    <p><strong>Next Steps:</strong></p>
+                    <ul>
+                        <li>Copy this license key and store it securely</li>
+                        <li>Use the key to activate your Azure PGP installation</li>
+                        <li>Check your email (${data.email}) for additional setup instructions</li>
+                    </ul>
+                `;
+
+            } catch (error) {
+                // Show error response
+                response.className = 'license-response error';
+                response.innerHTML = `
+                    <h4>Error Generating License</h4>
+                    <p>We're sorry, but we encountered an error while processing your request. Please try again or contact support.</p>
+                    <p>Error: ${error.message}</p>
+                `;
+            } finally {
+                loading.style.display = 'none';
+                response.style.display = 'block';
+            }
+        });
+
+        // Simulate license key generation
+        function generateLicenseKey(licenseType) {
+            const prefix = licenseType === 'pro' ? 'PRO' : 'ENT';
+            const timestamp = Date.now().toString(36);
+            const random = Math.random().toString(36).substr(2, 9);
+            return `${prefix}-${timestamp}-${random}`.toUpperCase();
+        }
+    </script>
+</body>
+
+</html>
