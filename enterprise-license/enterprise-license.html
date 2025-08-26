@@ -235,27 +235,26 @@
             const data = Object.fromEntries(formData.entries());
 
             try {
-                // In a real implementation, you would make an API call to your license server
-                // For now, we'll simulate the response
-                await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate API delay
 
-                // Simulate license key generation
-                const licenseKey = generateLicenseKey(data.licenseType);
-
-                // Show success response
-                response.className = 'license-response success';
-                response.innerHTML = `
-                    <h4>License Key Generated Successfully!</h4>
-                    <p>Your personal license key has been generated. Please save this key in a secure location:</p>
-                    <div class="license-key">${licenseKey}</div>
-                    <p><strong>Next Steps:</strong></p>
-                    <ul>
-                        <li>Copy this license key and store it securely</li>
-                        <li>Use the key to activate your Azure PGP installation</li>
-                        <li>Check your email (${data.email}) for additional setup instructions</li>
-                    </ul>
-                `;
-
+                const result = await callLicenseServer(data);
+                if (result.error) {
+                    response.className = 'license-response error';
+                    response.innerHTML = `
+                        <h4>Error Generating License</h4>
+                        <p>${result.error.message || 'Unknown error'}${result.error.status ? ` (HTTP ${result.error.status})` : ''}</p>
+                    `;
+                } else {
+                    const license = result.license || {};
+                    const licenseKey = license.key || '(no key returned)';
+                    response.className = 'license-response success';
+                    response.innerHTML = `
+                        <h4>License Key Generated Successfully!</h4>
+                        <p>Your personal license key has been generated. Please save this key in a secure location:</p>
+                        <div class="license-key">${licenseKey}</div>
+                        <p><strong>Details:</strong></p>
+                        <pre class="license-key">${JSON.stringify(license, null, 2)}</pre>
+                    `;
+                }
             } catch (error) {
                 // Show error response
                 response.className = 'license-response error';
@@ -270,12 +269,45 @@
             }
         });
 
-        // Simulate license key generation
-        function generateLicenseKey(licenseType) {
-            const prefix = licenseType === 'pro' ? 'PRO' : 'ENT';
-            const timestamp = Date.now().toString(36);
-            const random = Math.random().toString(36).substr(2, 9);
-            return `${prefix}-${timestamp}-${random}`.toUpperCase();
+        async function callLicenseServer(data) {
+            const request = {
+                name: data.name,
+                email: data.email,
+                company: data.company,
+                plan: data.licenseType,
+                planType: 'personal'
+            };
+
+            try {
+                const res = await fetch('https://license-server-production-9d1f.up.railway.app/v1/licenses', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(request)
+                });
+
+                let json;
+                try {
+                    json = await res.json();
+                } catch (_) {
+                    json = null;
+                }
+
+                if (!res.ok) {
+                    return {
+                        license: null,
+                        error: {
+                            message: (json && (json.message || json.error)) || res.statusText || 'Request failed',
+                            status: res.status
+                        }
+                    };
+                }
+
+                return { license: json, error: null };
+            } catch (err) {
+                return { license: null, error: { message: err.message || 'Network error' } };
+            }
         }
     </script>
 </body>
